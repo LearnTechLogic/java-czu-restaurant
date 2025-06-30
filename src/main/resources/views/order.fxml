@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<AnchorPane prefHeight="600" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.czu.controller.OrderController">
+    <children>
+        <!-- 标题标签 - 居中显示 -->
+        <Label alignment="CENTER" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="菜品管理系统"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0"/>
+
+        <!-- 左右表格内容区域 -->
+        <HBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="100.0" AnchorPane.topAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <!-- 右侧内容区域 -->
+            <VBox alignment="CENTER" spacing="10">
+                <TableView fx:id="DishTable" prefHeight="280.0" prefWidth="650.0">
+                    <columns>
+                        <TableColumn fx:id="ImageColumn" editable="false" sortable="false" style="-fx-alignment: CENTER" text="菜品图片"/>
+                        <TableColumn fx:id="NameColumn" text="菜品名称"/>
+                        <TableColumn fx:id="TableColumn" text="桌号"/>
+                        <TableColumn fx:id="OrderIdColumn" text="订单号"/>
+                        <TableColumn fx:id="NumColumn" text="数量"/>
+                        <TableColumn fx:id="StateColumn" text="菜品状态"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </HBox>
+        <HBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="100.0" AnchorPane.topAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="ChangeButton" onAction="#ChangeOrderState" text="修改订单状态"/>
+        </HBox>
+
+
+    </children>
+</AnchorPane>
+
+
+

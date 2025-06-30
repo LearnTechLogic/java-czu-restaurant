@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 导入布局容器和控件类 -->
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Pos?>
+
+<!-- 使用StackPane作为根容器，实现内容自动居中 -->
+<StackPane prefHeight="400.0" prefWidth="600.0"
+           xmlns="http://javafx.com/javafx/8"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.czu.controller.ServerPostController">
+
+    <children>
+        <!-- 使用VBox垂直排列内容，设置间距 -->
+        <VBox alignment="CENTER" spacing="30">
+
+            <!-- 标题部分 -->
+            <Label fx:id="titleLabel" text="员工信息录入"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold;"
+                   alignment="CENTER" />
+
+            <!-- 表单内容容器（通过spacing和内边距替代padding） -->
+            <VBox alignment="CENTER" spacing="20"
+                  style="-fx-background-color: #f5f5f5; -fx-padding: 20px; -fx-border-radius: 8px; -fx-background-radius: 8px;">
+
+                <!-- 姓名行 -->
+                <HBox alignment="CENTER" spacing="20">
+                    <Label text="姓名:" style="-fx-font-size: 16px; -fx-min-width: 80px; -fx-text-alignment: RIGHT;" />
+                    <TextField fx:id="nameField" prefWidth="250"
+                               style="-fx-font-size: 16px; -fx-padding: 5px;" promptText="请输入姓名"/>
+                </HBox>
+
+                <!-- 账号行 -->
+                <HBox alignment="CENTER" spacing="20">
+                    <Label text="账号:" style="-fx-font-size: 16px; -fx-min-width: 80px; -fx-text-alignment: RIGHT;" />
+                    <TextField fx:id="accountField" prefWidth="250"
+                               style="-fx-font-size: 16px; -fx-padding: 5px;" />
+                </HBox>
+
+                <!-- 密码行 -->
+                <HBox alignment="CENTER" spacing="20">
+                    <Label text="密码:" style="-fx-font-size: 16px; -fx-min-width: 80px; -fx-text-alignment: RIGHT;" />
+                    <TextField fx:id="passwordField" prefWidth="250"
+                               style="-fx-font-size: 16px; -fx-padding: 5px;" promptText="请输入密码"/>
+                </HBox>
+
+                <!-- 职能行 -->
+                <HBox alignment="CENTER" spacing="20">
+                    <Label text="职能:" style="-fx-font-size: 16px; -fx-min-width: 80px; -fx-text-alignment: RIGHT;" />
+                    <ComboBox fx:id="functionCombo" prefWidth="250"
+                              style="-fx-font-size: 16px; -fx-padding: 5px;"
+                              promptText="请选择职能" />
+                </HBox>
+
+                <!-- 按钮区域（移除padding，使用spacing控制间距） -->
+                <HBox alignment="CENTER" spacing="200" style="-fx-margin: 15px 0 0 0;">
+                    <Button text="提交" onAction="#handleSubmit"
+                            style="-fx-font-size: 16px; -fx-padding: 8px 20px; -fx-background-color: #4CAF50; -fx-text-fill: white;" />
+                    <Button text="重置" onAction="#handleReset"
+                            style="-fx-font-size: 16px; -fx-padding: 8px 20px; -fx-background-color: #f44336; -fx-text-fill: white;" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </children>
+</StackPane>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane prefHeight="600" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.czu.controller.ManageController">
+    <children>
+        <!-- 标题标签 - 居中显示 -->
+        <Label alignment="CENTER" layoutX="400.0" layoutY="30.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="菜品管理系统" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
+
+        <!-- 表格视图 - 调整位置和大小 -->
+        <TableView fx:id="dishTable" layoutX="50.0" layoutY="100.0" prefHeight="400.0" prefWidth="700.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="100.0">
+            <columns>
+                <TableColumn fx:id="imageColumn" editable="false" prefWidth="100.0" sortable="false" style="-fx-alignment: CENTER" text="菜品图片" />
+                <TableColumn fx:id="nameColumn" prefWidth="150.0" style="-fx-alignment: CENTER" text="菜品名称" />
+                <TableColumn fx:id="priceColumn" prefWidth="80.0" style="-fx-alignment: CENTER" text="价格" />
+                <TableColumn fx:id="categoryColumn" prefWidth="100.0" text="分类" />
+                <TableColumn fx:id="stateColumn" prefWidth="100.0" style="-fx-alignment: CENTER" text="状态" />
+            </columns>
+        </TableView>
+
+        <!-- 按钮组 - 居中对齐 -->
+        <HBox alignment="CENTER" layoutX="50.0" layoutY="520.0" prefWidth="700.0" spacing="30" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#showAddDishDialog" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;" text="添加菜品" />
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#showEditDishDialog" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px;" text="编辑菜品" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteSelectedDish" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 14px;" text="删除菜品" />
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshData" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-size: 14px;" text="刷新数据" />
+            <Button fx:id="orderButton" mnemonicParsing="false" onAction="#switchToMenuView" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #9C27B0; -fx-text-fill: white; -fx-font-size: 14px;" text="查看订单" />
+        </HBox>
+    </children>
+</AnchorPane>
