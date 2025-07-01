@@ -6,15 +6,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import org.czu.RestaurantApplication;
 import org.czu.mapper.OrderMapper;
 import org.czu.mapper.SettlementMapper;
 import org.czu.pojo.Classification;
 import org.czu.pojo.Dish;
 import org.czu.utils.BindColumns;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +52,11 @@ public class OrderController {
     @FXML
     private Button ChangeButton;
 
+    @FXML
+    private Button RefreshButton;
 
+    @FXML
+    private Button BackButton;
 
     private ObservableList<Dish> DishList = FXCollections.observableArrayList();
 
@@ -151,19 +161,22 @@ public class OrderController {
     private void ChangeOrderState() {
         Dish dish = DishTable.getSelectionModel().getSelectedItem();
         if (dish != null) {
-            // 获取当前行的索引
-            int index = DishTable.getSelectionModel().getSelectedIndex();
-            // 获取当前行的数据
-            Dish selectedDish = DishTable.getItems().get(index);
-            // 获取当前行的状态
-            int state = selectedDish.getState();
-            // 根据状态进行不同的处理
-            switch (state) {
-                case 1:
-            }
+            int orderId = dish.getOrderId();
+            int state = dish.getState();
+            OrderMapper.changeOrderState(orderId, state);
+            RefreshData();
         }
     }
 
+    @FXML
+    private void RefreshData() {
+        OrderMapper.getData(DishList, DishTable);
+    }
+
+    @FXML
+    private void BackDish() {
+        RestaurantApplication.changePage("/views/mange.fxml");
+    }
 
 }
 

@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ShopController {
-    int classificationId = 0;
+    public static int classificationId = 7;
 
     @FXML
     private Label leftTableNumberLabel;
@@ -33,6 +33,12 @@ public class ShopController {
 
     @FXML
     private ComboBox<String> dishCombo;
+
+    @FXML
+    private TextField dishNameIndexTextField;
+
+    @FXML
+    private Button searchButton;
 
     @FXML
     private TableView<Dish> leftDishTable;
@@ -89,6 +95,9 @@ public class ShopController {
         leftTableNumberLabel.setText("当前:" + TableController.tableId + "号桌");
         rightTableNumberLabel.setText("订单号:" + TableController.orderId);
 
+        dishNameIndexTextField.setText( "");
+        dishNameIndexTextField.toFront();
+        searchButton.toFront();
         dishCombo.toFront();
         List<Classification> classifications = ShopMapper.getClassification();
         // 将权限列表添加到ComboBox中
@@ -105,6 +114,7 @@ public class ShopController {
             for (Classification perm : classifications) {
                 if (perm.getName().equals(selectedPermission)) {
                     classificationId = perm.getId();
+                    refreshDishTable();
                     break;
                 }
             }
@@ -252,7 +262,7 @@ public class ShopController {
             }
         });
 
-        ShopMapper.getRightData(rightDishList, rightDishTable);
+        refreshDishTable();
 
     }
 
@@ -264,7 +274,9 @@ public class ShopController {
     }
 
     private void refreshDishTable() {
-        ShopMapper.getData(dishList, leftDishTable);
+        String searchName = dishNameIndexTextField.getText().trim();
+        ShopMapper.getData(searchName, dishList, leftDishTable);
+        //ShopMapper.getData(dishList, leftDishTable);
         ShopMapper.getRightData(rightDishList, rightDishTable);
     }
 
@@ -305,6 +317,13 @@ public class ShopController {
     private void settlementButton(){
         ShopMapper.settlementDish();
         RestaurantApplication.changePage("/views/settlement.fxml");
+    }
+
+    @FXML
+    private void searchDish(){
+        String name = dishNameIndexTextField.getText();
+        ShopMapper.getData(name, dishList, leftDishTable);
+
     }
 
 }

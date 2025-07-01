@@ -22,5 +22,6 @@ public class Dish {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int tableId;
+    private int orderId;
 
 }

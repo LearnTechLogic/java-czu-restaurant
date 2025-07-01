@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.czu.RestaurantApplication;
 import org.czu.mapper.ManageMapper;
 import org.czu.mapper.SettlementMapper;
 import org.czu.mapper.ShopMapper;
@@ -52,6 +53,9 @@ public class SettlementController {
 
     @FXML
     private TableColumn<Dish, LocalDateTime> EndTimeColumn;
+
+    @FXML
+    private Button backButton;
 
 
     private ObservableList<Dish> DishList = FXCollections.observableArrayList();
@@ -183,6 +187,11 @@ public class SettlementController {
 
     private void refreshDishTable() {
         ShopMapper.getData(DishList, DishTable);
+    }
+
+    @FXML
+    private void BackSettlement() {
+        RestaurantApplication.changePage("/views/table.fxml");
     }
 
 

@@ -3,12 +3,12 @@ package org.czu.mapper;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
+import org.czu.controller.ShopController;
 import org.czu.controller.TableController;
 import org.czu.pojo.Classification;
 import org.czu.pojo.Dish;
 import org.czu.utils.MysqlConnect;
 import org.czu.utils.ShowAlert;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,11 +50,17 @@ public class ShopMapper {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Dish dish = null;
+        StringBuilder calssifications = new StringBuilder();
+        if(ShopController.classificationId == 0){
+            calssifications.append("1,2,3,4,5,6");
+        }else {
+            calssifications.append(ShopController.classificationId);
+        }
 
         try {
             conn = MysqlConnect.getConnection(); // 直接调用静态方法
             String sql = "SELECT id, name, price, `describe`, server, state, image, classification " +
-                    "FROM dish ORDER BY classification";
+                    "FROM dish WHERE classification in ("+  calssifications+ ") AND state = 1 ORDER BY classification";
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
 
@@ -92,7 +98,7 @@ public class ShopMapper {
             String sql ="SELECT d.id, d.name, d.price, d.image, od.quantity " +
                         "FROM dish d " +
                         "JOIN order_detail od ON d.id = od.dish_id " +
-                        "WHERE od.order_id = ?";
+                        "WHERE od.order_id = ? ";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, orderId);
             rs = pstmt.executeQuery();
@@ -454,4 +460,82 @@ public class ShopMapper {
         return success;
     }
 
+    public static void getData(String searchName, ObservableList<Dish> dishList, TableView<Dish> dishTable) {
+        dishList.clear();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Dish dish = null;
+
+        // 处理分类ID（修正拼写错误）
+        StringBuilder classifications = new StringBuilder();
+        if (ShopController.classificationId == 7) {
+            classifications.append("1,2,3,4,5,6");
+        } else {
+            classifications.append(ShopController.classificationId);
+        }
+
+        try {
+            conn = MysqlConnect.getConnection();
+
+            // 动态生成IN条件的占位符
+            String[] classificationArray = classifications.toString().split(",");
+            StringBuilder placeholderBuilder = new StringBuilder();
+            for (int i = 0; i < classificationArray.length; i++) {
+                placeholderBuilder.append("?,");
+            }
+            if (placeholderBuilder.length() > 0) {
+                placeholderBuilder.deleteCharAt(placeholderBuilder.length() - 1); // 移除最后一个逗号
+            }
+
+            // 构建完整SQL（使用参数化查询）
+            String sql = "SELECT id, name, price, `describe`, server, state, image, classification " +
+                    "FROM dish " +
+                    "WHERE classification IN (" + placeholderBuilder + ") " +
+                    "AND state = 1 " +
+                    "AND name LIKE ? " +
+                    "ORDER BY classification";
+
+            pstmt = conn.prepareStatement(sql);
+
+            // 设置分类参数
+            for (int i = 0; i < classificationArray.length; i++) {
+                pstmt.setInt(i + 1, Integer.parseInt(classificationArray[i]));
+            }
+
+            // 设置模糊查询参数（处理null情况）
+            String likeParam = (searchName != null) ? "%" + searchName + "%" : "%";
+            pstmt.setString(classificationArray.length + 1, likeParam);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                dish = new Dish();
+                dish.setId(rs.getInt("id"));
+                dish.setName(rs.getString("name"));
+                dish.setPrice(rs.getDouble("price"));
+                dish.setDescribe(rs.getString("describe"));
+                dish.setServer(rs.getInt("server"));
+                dish.setState(rs.getInt("state"));
+                dish.setImage(rs.getString("image"));
+                dish.setClassification(rs.getInt("classification"));
+                dishList.add(dish);
+            }
+
+            dishTable.setItems(dishList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            ShowAlert.showAlert(Alert.AlertType.ERROR, "数据库查询失败", "请检查数据库连接");
+        } finally {
+            // 确保资源关闭
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

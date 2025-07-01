@@ -35,7 +35,7 @@ public class OrderMapper {
 
             while (rs.next()) {
                 dish = new Dish();
-                dish.setId(rs.getInt("order_id"));
+                dish.setOrderId(rs.getInt("order_id"));
                 dish.setName(rs.getString("name"));
                 dish.setState(rs.getInt("state"));
                 dish.setImage(rs.getString("image"));
@@ -51,5 +51,22 @@ public class OrderMapper {
             ShowAlert.showAlert(Alert.AlertType.ERROR, "数据库查询失败", "请检查数据库连接");
         }
 
+    }
+
+    public static void changeOrderState (int orderId, int state){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        state = state + 1;
+        try {
+            conn = MysqlConnect.getConnection();
+            String sql = "UPDATE `order` SET state = ? WHERE id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, state);
+            pstmt.setInt(2, orderId);
+            pstmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("更新数据失败" + e.getMessage());
+        }
     }
 }
